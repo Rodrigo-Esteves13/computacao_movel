@@ -51,4 +51,9 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
+
+    val nav_version = "2.10.2" // "2.8.2"
+    implementation("androidx.navigation:navigation-compose:$nav_version")
+    val compose_material_version = "1.12.1" // "1.7.3"
+    implementation("androidx.compose.material:material:$compose_material_version") // necessário para se poder usar a BottomNavigation
 }

@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Navegar</string>
+    <string name="ecra01">Ecrã 1</string>
+    <string name="ecra02">Ecrã 2</string>
+    <string name="ecra03">Ecrã 3</string>
+    <string name="ecra04">Ecrã 4</string>
+    <string name="name">name\n</string>
 </resources>
