@@ -63,13 +63,14 @@ fun ProgramaPrincipal() {
 @Composable
 fun AppNavigation(navController: NavHostController) {
     val sharedName = rememberSaveable { mutableStateOf("") }
+    val sharedResult = rememberSaveable { mutableStateOf("") }
 
     NavHost(navController, startDestination = Destino.Ecra01.route) {
         composable(Destino.Ecra01.route) {
-            Ecra01(sharedName)
+            Ecra01(sharedName, sharedResult)
         }
         composable(Destino.Ecra02.route) {
-            Ecra02(sharedName)
+            Ecra02(sharedName, sharedResult)
         }
         composable(Destino.Ecra03.route) {
             Ecra03()
@@ -105,5 +106,35 @@ fun BottomNavigationBar(navController: NavController, appItems: List<Destino>) {
                 }
             )
         }
+    }
+}
+
+fun calcularConta(conta: String): String {
+    return try {
+        val texto = conta.replace(" ", "")
+
+        val resultado = when {
+            texto.contains("+") -> {
+                val numeros = texto.split("+")
+                numeros[0].toDouble() + numeros[1].toDouble()
+            }
+            texto.contains("-") -> {
+                val numeros = texto.split("-")
+                numeros[0].toDouble() - numeros[1].toDouble()
+            }
+            texto.contains("*") -> {
+                val numeros = texto.split("*")
+                numeros[0].toDouble() * numeros[1].toDouble()
+            }
+            texto.contains("/") -> {
+                val numeros = texto.split("/")
+                numeros[0].toDouble() / numeros[1].toDouble()
+            }
+            else -> return "Conta inválida"
+        }
+        resultado.toString().removeSuffix(".0")
+
+    } catch (e: Exception) {
+        "Erro"
     }
 }
