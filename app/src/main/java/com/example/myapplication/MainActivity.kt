@@ -17,8 +17,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            MyApplicationTheme() {
+            MyApplicationTheme {
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
                     ProgramaPrincipal()
                 }
@@ -62,21 +62,21 @@ fun ProgramaPrincipal() {
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
-    val sharedName = rememberSaveable { mutableStateOf("") }
-    val sharedResult = rememberSaveable { mutableStateOf("") }
+    // Lista de Strings conforme exigido no enunciado e na sebenta (secção 5.1)
+    val listaStrings = remember { mutableStateListOf<String>() }
 
     NavHost(navController, startDestination = Destino.Ecra01.route) {
         composable(Destino.Ecra01.route) {
-            Ecra01(sharedName, sharedResult)
+            Ecra01(listaStrings)
         }
         composable(Destino.Ecra02.route) {
-            Ecra02(sharedName, sharedResult)
+            Ecra02(listaStrings)
         }
         composable(Destino.Ecra03.route) {
-            Ecra03()
+            Ecra03(listaStrings)
         }
         composable(Destino.Ecra04.route) {
-            Ecra04()
+            Ecra04(listaStrings)
         }
     }
 }
@@ -85,7 +85,8 @@ fun AppNavigation(navController: NavHostController) {
 fun BottomNavigationBar(navController: NavController, appItems: List<Destino>) {
     BottomNavigation(
         windowInsets = BottomNavigationDefaults.windowInsets,
-        backgroundColor = colorResource(id = R.color.purple_700), contentColor = Color.White
+        backgroundColor = colorResource(id = R.color.purple_700),
+        contentColor = Color.White
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -106,35 +107,5 @@ fun BottomNavigationBar(navController: NavController, appItems: List<Destino>) {
                 }
             )
         }
-    }
-}
-
-fun calcularConta(conta: String): String {
-    return try {
-        val texto = conta.replace(" ", "")
-
-        val resultado = when {
-            texto.contains("+") -> {
-                val numeros = texto.split("+")
-                numeros[0].toDouble() + numeros[1].toDouble()
-            }
-            texto.contains("-") -> {
-                val numeros = texto.split("-")
-                numeros[0].toDouble() - numeros[1].toDouble()
-            }
-            texto.contains("*") -> {
-                val numeros = texto.split("*")
-                numeros[0].toDouble() * numeros[1].toDouble()
-            }
-            texto.contains("/") -> {
-                val numeros = texto.split("/")
-                numeros[0].toDouble() / numeros[1].toDouble()
-            }
-            else -> return "Conta inválida"
-        }
-        resultado.toString().removeSuffix(".0")
-
-    } catch (e: Exception) {
-        "Erro"
     }
 }
